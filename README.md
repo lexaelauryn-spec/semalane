@@ -38,6 +38,14 @@ Expected test result: **31 passing tests**.
 
 The synthetic demo creates 12 concurrent Work Contracts. TASK-3 changes `src/auth`; TASK-12 changes `docs/client`. The files do not overlap, but both claim `public-api:auth-v2`, so SemaLane detects the semantic collision and blocks TASK-12 before composition.
 
+## Live demo
+
+The verified Cloudflare control room is available at:
+
+https://cloudforge-agent-fabric.alexandrechoken.workers.dev/control-room
+
+The live environment uses synthetic competition data only. Operator mutation routes remain bearer-token protected.
+
 ## Cloudflare deployment
 
 Live deployment requires a Cloudflare Workers Paid account with Artifacts enabled.
