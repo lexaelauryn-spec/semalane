@@ -38,7 +38,7 @@ Agents should collaborate by exposing what they are changing and evidence that i
 ## Submission checklist
 - [x] Working Cloudflare deployment
 - [x] Artifacts beta/account access verified
-- [ ] Public source repository created
+- [x] Public source repository created
 - [x] Apache-2.0 license visible
 - [x] README run instructions verified from a clean environment
 - [x] npm test passes
