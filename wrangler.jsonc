@@ -1,0 +1,59 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "semalane",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "artifacts": [
+    {
+      "binding": "ARTIFACTS",
+      "namespace": "semalane"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SEMALANE_STATE",
+        "class_name": "SemaLaneState"
+      }
+    ]
+  },
+  "workflows": [
+    {
+      "name": "semalane-artifact-push",
+      "binding": "ARTIFACT_PUSH",
+      "class_name": "ArtifactPushWorkflow"
+    }
+  ],
+  "exports": {
+    "SemaLaneState": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  },
+  "triggers": {
+    "events": [
+      {
+        "type": "cf.artifacts.repo.pushed",
+        "filter": {
+          "namespace": "semalane"
+        },
+        "targets": [
+          {
+            "type": "workflow",
+            "workflow_name": "semalane-artifact-push"
+          }
+        ]
+      }
+    ]
+  },
+  "vars": {
+    "SEMALANE_DEMO_MODE": "1"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "semalane",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Privacy-preserving agent-native Git coordination fabric for Cloudflare Workers + Artifacts",
+  "scripts": {
+    "test": "node --test",
+    "demo": "node demo/swarm.js",
+    "preflight": "node scripts/preflight.mjs",
+    "check": "node --check src/protocol.js && node --check src/conflict.js && node --check src/coordinator.js && node --check src/worker.js && node --check src/durable.js && node --check src/workflow.js && node --check src/live-composition.js && node --check src/demo-live.js && node --check src/memory-fs.js"
+  },
+  "dependencies": {
+    "isomorphic-git": "^1.36.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.145.0"
+  },
+  "license": "Apache-2.0"
+}
