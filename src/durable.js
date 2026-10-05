@@ -29,9 +29,13 @@ export class SemaLaneState extends DurableObject {
       if (request.method === "GET" && url.pathname === "/resolutions") return response(coordinator.resolutions());
       if (request.method === "GET" && url.pathname === "/relay") return response(coordinator.snapshot().relay ?? []);
       if (request.method === "GET" && url.pathname === "/agents") return response(coordinator.snapshot().agents ?? []);
+      if (request.method === "GET" && url.pathname === "/missions") return response(coordinator.snapshot().missions ?? []);
 
       const body = request.method === "GET" ? null : await request.json();
 
+      if (request.method === "POST" && url.pathname === "/missions") {
+        const result = coordinator.registerMission(body); await this.save(coordinator); return response(result, 201);
+      }
       if (request.method === "POST" && url.pathname === "/contracts") {
         const result = coordinator.registerContract(body); await this.save(coordinator); return response(result, 201);
       }
