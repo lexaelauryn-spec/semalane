@@ -147,11 +147,12 @@ export default {
       if (request.method === "GET" && reads[url.pathname]) return stateFetch(env, reads[url.pathname]);
 
       if (request.method === "GET" && url.pathname === "/control-room") {
-        const [snapshot, composition] = await Promise.all([
+        const [snapshot, composition, futures] = await Promise.all([
           stateJson(env, "/snapshot"),
-          stateJson(env, "/composition")
+          stateJson(env, "/composition"),
+          stateJson(env, "/futures")
         ]);
-        return new Response(renderControlRoom(snapshot, composition), {
+        return new Response(renderControlRoom(snapshot, composition, futures), {
           headers: { "content-type": "text/html; charset=utf-8" }
         });
       }
