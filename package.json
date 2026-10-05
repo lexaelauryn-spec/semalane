@@ -8,7 +8,7 @@
     "test": "node --test",
     "demo": "node demo/swarm.js",
     "preflight": "node scripts/preflight.mjs",
-    "check": "node --check src/protocol.js && node --check src/conflict.js && node --check src/coordinator.js && node --check src/worker.js && node --check src/durable.js && node --check src/workflow.js && node --check src/live-composition.js && node --check src/demo-live.js && node --check src/memory-fs.js"
+    "check": "node --check src/protocol.js && node --check src/conflict.js && node --check src/relay.js && node --check src/resident-agent.js && node --check src/authority.js && node --check src/futures.js && node --check src/coordinator.js && node --check src/control-room.js && node --check src/worker.js && node --check src/durable.js && node --check src/workflow.js && node --check src/live-composition.js && node --check src/demo-live.js && node --check src/memory-fs.js"
   },
   "dependencies": {
     "isomorphic-git": "^1.36.1"
