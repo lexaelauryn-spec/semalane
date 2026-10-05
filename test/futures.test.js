@@ -49,3 +49,23 @@ test("candidate futures are descriptive only and do not mutate snapshot state", 
   buildCandidateFutures(snapshot, policy);
   assert.deepEqual(snapshot, before);
 });
+
+
+test("blocked semantic work appears as an explicit counterfactual future", () => {
+  const snapshot = {
+    contracts: [
+      { id: "T1", agentId: "a", state: "completed", conflicts: [], artifact: { repoName: "r1", commit: "abc" } },
+      { id: "T2", agentId: "b", state: "blocked", conflicts: [{ with: "T1", reasons: [{ type: "semantic-contract", value: "api:v2" }] }] }
+    ],
+    evidence: [
+      { contractId: "T1", kind: "test", outcome: "passed" },
+      { contractId: "T1", kind: "review", outcome: "approved", reviewerId: "r1" },
+      { contractId: "T1", kind: "review", outcome: "approved", reviewerId: "r2" }
+    ]
+  };
+  const result = buildCandidateFutures(snapshot, policy);
+  const future = result.futures.find((item) => item.subjectContractId === "T2");
+  assert.equal(future.promotable, false);
+  assert.equal(future.requirements.includes("unresolved-conflict"), true);
+  assert.equal(future.requirements.includes("complete-work"), true);
+});
