@@ -119,11 +119,18 @@ Autonomy is bounded, not unrestricted:
 - [x] 12-agent semantic-conflict demo
 - [x] Live composition materialization
 - [x] Existing control room
-- [ ] Verified Relay
-- [ ] Resident Agent lifecycle
-- [ ] Capability/separation-of-powers graph
-- [ ] Counterfactual composition view
-- [ ] Judge-facing control-room redesign
-- [ ] SemaLane naming cleanup in live URL/docs
+- [x] Verified Relay
+- [x] Resident Agent lifecycle
+- [x] Capability/separation-of-powers graph
+- [x] Counterfactual composition view
+- [x] Judge-facing control-room redesign
+- [ ] Live deployment refresh + SemaLane hostname cleanup
 - [ ] 5–10 minute demo recorded
 - [ ] Contest application completed
+
+
+## Current proof point
+
+The contest branch now has a deterministic organization demo that exercises the new model end to end: one human mission, bounded resident agents, verified handoffs, independent review, semantic blocking, candidate futures, and a read-only promotion boundary. GitHub Actions validates syntax, the full regression suite, the deterministic local demo, and the public-repository preflight.
+
+The remaining work is deliberately operational and presentation-focused: refresh the live Cloudflare deployment from the reviewed branch, verify the rendered experience in the real Worker, record the demo, and submit the application.
