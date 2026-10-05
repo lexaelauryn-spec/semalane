@@ -1,3 +1,4 @@
+import { validateCapabilitySeparation } from "./authority.js";
 import { validatePrivacyBoundary } from "./protocol.js";
 
 export const AGENT_STATES = Object.freeze(["idle", "active"]);
@@ -24,7 +25,7 @@ export function validateResidentAgent(raw) {
   return {
     id: requiredString(raw.id, "agent.id"),
     role: requiredString(raw.role, "agent.role"),
-    capabilities: stringList(raw.capabilities ?? [], "agent.capabilities"),
+    capabilities: validateCapabilitySeparation(stringList(raw.capabilities ?? [], "agent.capabilities")),
     state: raw.state == null ? "idle" : requiredString(raw.state, "agent.state"),
     lastHandoffId: raw.lastHandoffId == null ? null : requiredString(raw.lastHandoffId, "agent.lastHandoffId"),
     lastActiveAt: raw.lastActiveAt == null ? null : requiredString(raw.lastActiveAt, "agent.lastActiveAt")
