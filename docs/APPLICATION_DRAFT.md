@@ -66,3 +66,34 @@ Insert only after final owner review:
 - final screenshots if requested
 
 Do not submit from this document automatically.
+
+
+## Exact current Cloudflare form fields
+
+Verified against Cloudflare's public submission form on October 5, 2026.
+
+### Your team
+- Team name *
+- Primary contact name *
+- Primary contact email *
+- Team location *
+- First attendee name *
+- First attendee email *
+- Second attendee name (optional)
+- Second attendee email (optional)
+
+### Your project
+- Project name * — **SemaLane**
+- Project vision * — use/adapt the “problem”, “what SemaLane does”, and “what makes it different” sections above.
+- How you used Cloudflare * — use/adapt the “Why Cloudflare” section above.
+
+### Demo and source
+- Demo video * — upload MP4, WebM, or MOV; maximum 2 GiB.
+- Open source repository URL * — https://github.com/lexaelauryn-spec/semalane
+- Instructions to run your project * — use the commands above.
+- Confirm project was built using Cloudflare Workers and Artifacts.
+- Confirm submission follows the competition terms.
+
+Cloudflare's competition page currently asks for a 5–10 minute demo. The prepared script targets 7–8 minutes.
+
+Do not fill personal contact/attendee fields or perform the final upload/submit action until owner review.
