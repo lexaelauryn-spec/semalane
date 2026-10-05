@@ -139,6 +139,7 @@ export default {
         "/graph": "/graph",
         "/merge-plan": "/merge-plan",
         "/composition": "/composition",
+        "/futures": "/futures",
         "/resolutions": "/resolutions",
         "/relay": "/relay",
         "/agents": "/agents"
