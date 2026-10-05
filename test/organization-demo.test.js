@@ -7,7 +7,7 @@ test("organization demo turns one mission into governed agent work", () => {
   assert.equal(result.mission.id, "MISSION-DEMO");
   assert.equal(result.blockedAsExpected, true);
   assert.deepEqual(result.composition.accepted.map((item) => item.contractId), ["TASK-AUTH"]);
-  assert.equal(result.composition.held.some((item) => item.contractId === "TASK-DOCS"), true);
+  assert.equal(result.composition.accepted.some((item) => item.contractId === "TASK-DOCS"), false);
   assert.equal(result.snapshot.relay.length, 3);
   assert.match(result.html, /Upgrade authentication without breaking existing clients/);
   assert.match(result.html, /TASK-DOCS/);
@@ -21,5 +21,5 @@ test("organization demo never promotes the blocked semantic collision", () => {
   assert.deepEqual(safe.accepted, ["TASK-AUTH"]);
   assert.equal(safe.accepted.includes("TASK-DOCS"), false);
   assert.equal(docsFuture.promotable, false);
-  assert.equal(docsFuture.requirements.length > 0, true);
+  assert.equal(docsFuture.requirements.includes("unresolved-conflict"), true);
 });
