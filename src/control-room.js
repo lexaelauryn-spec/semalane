@@ -19,6 +19,7 @@ export function renderControlRoom(snapshot, composition, futures = { futures: []
   const agents = snapshot.agents ?? [];
   const relay = snapshot.relay ?? [];
   const contracts = snapshot.contracts ?? [];
+  const missions = snapshot.missions ?? [];
   const activeAgents = agents.filter((item) => item.state === "active").length;
   const heldCount = composition.held?.length ?? 0;
 
@@ -99,6 +100,11 @@ footer{margin:22px 0;color:#879bb3;font-size:13px}
   <div><div class="tag">Git versions code. SemaLane versions continuity.</div><h1>SemaLane</h1></div>
   <div class="hero-copy">Humans set the mission and boundaries. Resident agents verify reality, relay work, review independently, and expose evidence before anything crosses the promotion boundary.</div>
 </header>
+
+<section class="panel boundary">
+  <div class="eyebrow">human intent</div><h2>Mission</h2>
+  ${missions.length ? missions.map((mission) => `<article><strong>${escapeHtml(mission.objective)}</strong><div class="tiny">boundaries</div>${list(mission.boundaries, "none")}<div class="tiny">success criteria</div>${list(mission.successCriteria, "none")}</article>`).join("") : '<span class="muted">No mission registered yet.</span>'}
+</section>
 
 <section class="metrics">
   <div class="card"><div class="num">${contracts.length}</div><div>work contracts</div></div>
