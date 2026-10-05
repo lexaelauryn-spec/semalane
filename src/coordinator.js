@@ -1,6 +1,7 @@
 import { validateEvidence, validateWorkContract } from "./protocol.js";
 import { validateHandoff, validateRelayRecord } from "./relay.js";
 import { idleResidentAgent, resumeResidentAgent, validateResidentAgent } from "./resident-agent.js";
+import { authorizeAgentAction } from "./authority.js";
 import { detectContractConflict } from "./conflict.js";
 import { buildEvidenceGraph, buildMergePlan } from "./evidence-graph.js";
 import { buildCompositionPlan, markMerged as markMergedSnapshot } from "./composition.js";
@@ -71,6 +72,23 @@ export class SemaLaneCoordinator {
     const next = { ...contract, artifact: { ...(contract.artifact ?? {}), ...artifact } };
     this.contracts.set(id, next);
     return structuredClone(next);
+  }
+
+  agentAttachEvidence(agentId, raw) {
+    const agent = this.agents.get(agentId);
+    const contract = this.contracts.get(raw?.contractId);
+    authorizeAgentAction(agent, "review:evidence", { contract });
+    if (raw?.kind !== "review") throw new Error("agent review boundary accepts review evidence only");
+    if (raw.reviewerId && raw.reviewerId !== agentId) throw new Error("reviewerId must match acting resident agent");
+    return this.attachEvidence({ ...raw, reviewerId: agentId });
+  }
+
+  agentMarkMerged(agentId, contractIds) {
+    const agent = this.agents.get(agentId);
+    const contracts = contractIds.map((id) => this.contracts.get(id)).filter(Boolean);
+    if (contracts.length !== contractIds.length) throw new Error("unknown contract");
+    authorizeAgentAction(agent, "promote:composition", { contracts });
+    return this.markMerged(contractIds);
   }
 
   attachEvidence(raw) {
