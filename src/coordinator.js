@@ -1,4 +1,6 @@
 import { validateEvidence, validateWorkContract } from "./protocol.js";
+import { validateHandoff, validateRelayRecord } from "./relay.js";
+import { idleResidentAgent, resumeResidentAgent, validateResidentAgent } from "./resident-agent.js";
 import { detectContractConflict } from "./conflict.js";
 import { buildEvidenceGraph, buildMergePlan } from "./evidence-graph.js";
 import { buildCompositionPlan, markMerged as markMergedSnapshot } from "./composition.js";
@@ -10,6 +12,8 @@ export class SemaLaneCoordinator {
     this.evidence = new Map((snapshot.evidence ?? []).map((item) => [item.id, item]));
     this.events = new Map((snapshot.events ?? []).map((item) => [item.id, item]));
     this.compositions = new Map((snapshot.compositions ?? []).map((item) => [item.repoName, item]));
+    this.relay = new Map((snapshot.relay ?? []).map((item) => [item.id, item]));
+    this.agents = new Map((snapshot.agents ?? []).map((item) => [item.id, item]));
   }
 
   registerContract(raw) {
@@ -26,6 +30,39 @@ export class SemaLaneCoordinator {
     const stored = { ...contract, state: conflicts.length ? "blocked" : "active", conflicts };
     this.contracts.set(stored.id, stored);
     return structuredClone(stored);
+  }
+
+  registerResidentAgent(raw) {
+    const agent = validateResidentAgent(raw);
+    if (this.agents.has(agent.id)) throw new Error("resident agent id already exists");
+    this.agents.set(agent.id, agent);
+    return structuredClone(agent);
+  }
+
+  resumeAgent(id, resume) {
+    const agent = resumeResidentAgent(this.agents.get(id), resume);
+    this.agents.set(id, agent);
+    return structuredClone(agent);
+  }
+
+  idleAgent(id, idle) {
+    if (!this.relay.has(idle?.handoffId)) throw new Error("resident agent cannot idle without a recorded handoff");
+    const handoff = this.relay.get(idle.handoffId);
+    if (handoff.kind !== "HANDOFF" || handoff.agentId !== id) throw new Error("handoff does not belong to resident agent");
+    const agent = idleResidentAgent(this.agents.get(id), idle);
+    this.agents.set(id, agent);
+    return structuredClone(agent);
+  }
+
+  recordRelay(raw) {
+    const record = raw?.kind === "HANDOFF" ? validateHandoff(raw) : validateRelayRecord(raw);
+    if (!this.contracts.has(record.contractId)) throw new Error("relay targets unknown contract");
+    if (!this.agents.has(record.agentId)) throw new Error("relay author is not a registered resident agent");
+    if (record.recipientAgentId && !this.agents.has(record.recipientAgentId)) throw new Error("relay recipient is not a registered resident agent");
+    if (record.supersedes && !this.relay.has(record.supersedes)) throw new Error("relay supersedes unknown record");
+    if (this.relay.has(record.id)) throw new Error("relay id already exists");
+    this.relay.set(record.id, record);
+    return structuredClone(record);
   }
 
   assignArtifact(id, artifact) {
@@ -96,7 +133,9 @@ export class SemaLaneCoordinator {
       contracts: [...this.contracts.values()].map((item) => structuredClone(item)),
       evidence: [...this.evidence.values()].map((item) => structuredClone(item)),
       events: [...this.events.values()].map((item) => structuredClone(item)),
-      compositions: [...this.compositions.values()].map((item) => structuredClone(item))
+      compositions: [...this.compositions.values()].map((item) => structuredClone(item)),
+      relay: [...this.relay.values()].map((item) => structuredClone(item)),
+      agents: [...this.agents.values()].map((item) => structuredClone(item))
     };
   }
 
