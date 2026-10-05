@@ -160,5 +160,7 @@ export class SemaLaneCoordinator {
   graph() { return buildEvidenceGraph(this.snapshot()); }
   mergePlan() { return buildMergePlan(this.snapshot()); }
   compositionPlan(policy = {}) { return buildCompositionPlan(this.snapshot(), policy); }
+
+  candidateFutures(policy = {}) { return buildCandidateFutures(this.snapshot(), policy); }
   resolutions() { return buildResolutionTickets(this.snapshot()); }
 }
