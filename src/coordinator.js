@@ -6,6 +6,7 @@ import { detectContractConflict } from "./conflict.js";
 import { buildEvidenceGraph, buildMergePlan } from "./evidence-graph.js";
 import { buildCompositionPlan, markMerged as markMergedSnapshot } from "./composition.js";
 import { buildResolutionTickets } from "./resolution.js";
+import { buildCandidateFutures } from "./futures.js";
 
 export class SemaLaneCoordinator {
   constructor(snapshot = {}) {
