@@ -2,6 +2,12 @@
 
 SemaLane is an agent-native Git coordination fabric for software organizations where humans define missions and boundaries while agents coordinate execution.
 
+## Project boundary
+
+SemaLane is a standalone open-source project. Its public architecture, terminology, state model, APIs, and deployment must be understandable and operable without access to any private external control system, internal codename, proprietary memory store, or organization-specific orchestration layer.
+
+General software-engineering patterns such as role separation, durable handoffs, least privilege, evidence-based review, and collision-aware coordination may be used, but SemaLane must express them through its own public protocol and implementation.
+
 ## Product thesis
 
 Git versions code history. SemaLane versions **continuity**: intent, authority, evidence, communication, handoffs, recommendations, compatibility, and the exact artifacts produced from them.
