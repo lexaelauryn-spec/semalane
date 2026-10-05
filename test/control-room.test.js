@@ -66,3 +66,16 @@ test("control room escapes relay and agent supplied HTML", () => {
   assert.equal(html.includes("<img src=x onerror=alert(1)>"), false);
   assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
 });
+
+
+test("control room explains the product thesis without exposing mutation controls", () => {
+  const html = renderControlRoom({
+    missions: [{ id: "M1", objective: "Ship safely", boundaries: ["no deploy"], successCriteria: ["proof"] }],
+    agents: [], relay: [], contracts: [], evidence: []
+  }, { accepted: [], held: [] }, { futures: [] });
+  assert.match(html, /Git versions code\. SemaLane versions continuity\./);
+  assert.match(html, /Humans set the mission and boundaries/);
+  assert.match(html, /Promotion requires explicit authority/);
+  assert.doesNotMatch(html, /<button/i);
+  assert.doesNotMatch(html, /<form/i);
+});
