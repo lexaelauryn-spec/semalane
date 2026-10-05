@@ -12,12 +12,12 @@ SemaLane lets agents collaborate by publishing what they are changing and proof 
 
 ### What it adds to ordinary Git
 
-- **Work Contracts**: task, scope, resources, constraints, semantic contracts, and expected outcome.
+- **Mission Contracts**: humans state the objective, boundaries, and success criteria once.\n- **Resident agents**: stable project roles go idle and resume by reconstructing continuity from observable state.\n- **Verified Relay**: typed handoffs record received, verified, changed, leaving, and recommended state.\n- **Separation of powers**: read, write, review, and promotion authority are independently bounded.\n- **Work Contracts**: task, scope, resources, constraints, semantic contracts, and expected outcome.
 - **Semantic conflict detection**: blocks incompatible intent even when files do not overlap.
 - **Evidence graph**: tests, reviews, Artifacts push events, and commit provenance instead of opaque confidence.
 - **Independent review quorum**: the task author cannot self-approve into composition.
 - **Private-context commitments**: one-way SHA-256 commitments prove which private context version governed work without storing the private context.
-- **Deterministic composition**: exact repositories and commits become an inspectable composition manifest.
+- **Candidate futures**: safe-now and blocked counterfactual compositions expose exactly what evidence or conflict resolution would unlock another future.\n- **Deterministic composition**: exact repositories and commits become an inspectable composition manifest.
 - **Provider-portable protocol**: Cloudflare is the execution substrate, not the owner of SemaLane semantics.
 
 ## 60-second local demo
@@ -34,7 +34,7 @@ npm run demo
 npm run preflight
 ```
 
-Expected test result: **31 passing tests**.
+The validation suite covers protocol privacy, verified relay, resident-agent lifecycle, separation of powers, semantic conflict detection, candidate futures, deterministic composition, operator auth, and the judge-facing control room. Run `npm test` for the current count.
 
 The synthetic demo creates 12 concurrent Work Contracts. TASK-3 changes `src/auth`; TASK-12 changes `docs/client`. The files do not overlap, but both claim `public-api:auth-v2`, so SemaLane detects the semantic collision and blocks TASK-12 before composition.
 
@@ -86,7 +86,7 @@ The checked-in `wrangler.jsonc` binds:
 - `POST /demo/seed`
 - `POST /demo/materialize-tasks`
 - `POST /composition/materialize`
-- `POST /contracts`
+- `POST /missions`\n- `POST /agents`\n- `POST /agents/resume`\n- `POST /agents/idle`\n- `POST /relay`\n- `POST /contracts`
 - `POST /evidence`
 - `POST /events/artifacts`
 - `POST /contracts/complete`
