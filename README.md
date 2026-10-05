@@ -106,7 +106,7 @@ See:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Public / private boundary](docs/PUBLIC_PRIVATE_BOUNDARY.md)
 - [Live Cloudflare integration](docs/LIVE_INTEGRATION.md)
-- [Competition demo storyboard](docs/SUBMISSION.md)
+- [Competition demo storyboard](docs/SUBMISSION.md)\n- [Demo recording script](docs/DEMO_SCRIPT.md)\n- [Application draft](docs/APPLICATION_DRAFT.md)\n- [Pre-submission gate](docs/PRE_SUBMISSION_GATE.md)
 
 ## License
 
