@@ -23,3 +23,18 @@ test("organization demo never promotes the blocked semantic collision", () => {
   assert.equal(docsFuture.promotable, false);
   assert.equal(docsFuture.requirements.includes("unresolved-conflict"), true);
 });
+
+
+test("organization demo is deterministic across repeated runs", () => {
+  const a = runOrganizationDemo();
+  const b = runOrganizationDemo();
+  const project = (result) => ({
+    mission: result.mission,
+    contracts: result.snapshot.contracts,
+    agents: result.snapshot.agents,
+    relay: result.snapshot.relay,
+    composition: result.composition,
+    futures: result.futures
+  });
+  assert.deepEqual(project(a), project(b));
+});
