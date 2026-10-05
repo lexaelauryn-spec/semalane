@@ -142,7 +142,8 @@ export default {
         "/futures": "/futures",
         "/resolutions": "/resolutions",
         "/relay": "/relay",
-        "/agents": "/agents"
+        "/agents": "/agents",
+        "/missions": "/missions"
       };
       if (request.method === "GET" && reads[url.pathname]) return stateFetch(env, reads[url.pathname]);
 
@@ -173,9 +174,10 @@ export default {
         return json({ materialized: await runDemoMaterialization(env) }, 201);
       }
 
-      if (request.method === "POST" && ["/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged","/relay","/agents","/agents/resume","/agents/idle"].includes(url.pathname)) {
+      if (request.method === "POST" && ["/missions","/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged","/relay","/agents","/agents/resume","/agents/idle"].includes(url.pathname)) {
         await requireOperator(request, env);
         const target = {
+          "/missions": "/missions",
           "/contracts": "/contracts",
           "/evidence": "/evidence",
           "/events/artifacts": "/events",
