@@ -48,3 +48,34 @@ test("resident agent records reject private reasoning material", () => {
     id: "a", role: "worker", capabilities: [], privateMemory: "nope"
   }), /private reasoning fields are forbidden/);
 });
+
+import { SemaLaneCoordinator } from "../src/coordinator.js";
+
+test("coordinator persists a verified relay across snapshots", () => {
+  const semalane = new SemaLaneCoordinator();
+  semalane.registerContract({
+    id: "TASK-1", agentId: "auth-worker", task: "auth", expectedOutcome: "works",
+    resources: [], paths: ["src/auth"], contracts: [], constraints: []
+  });
+  semalane.registerResidentAgent({ id: "auth-worker", role: "worker", capabilities: ["read:project", "write:task-fork"] });
+  semalane.registerResidentAgent({ id: "reviewer", role: "reviewer", capabilities: ["read:project", "review:evidence"] });
+  semalane.resumeAgent("auth-worker", { verified: ["main head observed"], observedAt: "2026-10-05T23:20:00Z" });
+  semalane.recordRelay({
+    id: "H-1", kind: "HANDOFF", agentId: "auth-worker", recipientAgentId: "reviewer",
+    contractId: "TASK-1", summary: "ready for review",
+    received: ["task contract"], verified: ["main head observed"], changed: ["auth"],
+    leaving: ["commit abc"], recommend: ["review invalid-token behavior"]
+  });
+  semalane.idleAgent("auth-worker", { handoffId: "H-1" });
+  const restored = new SemaLaneCoordinator(semalane.snapshot());
+  assert.equal(restored.snapshot().relay[0].id, "H-1");
+  assert.equal(restored.snapshot().agents.find((item) => item.id === "auth-worker").lastHandoffId, "H-1");
+});
+
+test("coordinator refuses relay records for unknown contracts", () => {
+  const semalane = new SemaLaneCoordinator();
+  semalane.registerResidentAgent({ id: "a", role: "worker", capabilities: [] });
+  assert.throws(() => semalane.recordRelay({
+    id: "R", kind: "FINDING", agentId: "a", contractId: "missing", summary: "x"
+  }), /unknown contract/);
+});
