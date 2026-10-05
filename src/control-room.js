@@ -92,7 +92,7 @@ th,td{text-align:left;padding:11px;border-bottom:1px solid #1b2532}th{font-size:
 .alert{background:#1a1012;border-color:#4a2529}.boundary{background:linear-gradient(135deg,#101827,#0d121a);border-color:#2b4568}
 .boundary strong{font-size:18px}.boundary .line{margin-top:10px;padding:12px;border:1px dashed #45678f;border-radius:12px}
 footer{margin:22px 0;color:#879bb3;font-size:13px}
-@media(max-width:760px){header{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.relay-grid{grid-template-columns:1fr}main{padding:18px}table{font-size:12px}th,td{padding:8px}}
+@media(max-width:760px){header{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.relay-grid{grid-template-columns:1fr}main{padding:18px}.panel{overflow-x:auto}table{font-size:12px;min-width:680px}th,td{padding:8px}}\n@media(max-width:480px){main{padding:12px}.metrics{grid-template-columns:1fr}.card,.panel{border-radius:12px}.num{font-size:30px}h1{font-size:52px}.hero-copy{font-size:14px}}\n@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body><main>
