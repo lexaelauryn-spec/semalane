@@ -25,6 +25,7 @@ export class SemaLaneState extends DurableObject {
       if (request.method === "GET" && url.pathname === "/graph") return response(coordinator.graph());
       if (request.method === "GET" && url.pathname === "/merge-plan") return response(coordinator.mergePlan());
       if (request.method === "GET" && url.pathname === "/composition") return response(coordinator.compositionPlan(DEFAULT_POLICY));
+      if (request.method === "GET" && url.pathname === "/futures") return response(coordinator.candidateFutures(DEFAULT_POLICY));
       if (request.method === "GET" && url.pathname === "/resolutions") return response(coordinator.resolutions());
       if (request.method === "GET" && url.pathname === "/relay") return response(coordinator.snapshot().relay ?? []);
       if (request.method === "GET" && url.pathname === "/agents") return response(coordinator.snapshot().agents ?? []);
