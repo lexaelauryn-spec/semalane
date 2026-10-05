@@ -79,3 +79,11 @@ test("control room explains the product thesis without exposing mutation control
   assert.doesNotMatch(html, /<button/i);
   assert.doesNotMatch(html, /<form/i);
 });
+
+
+test("control room includes narrow viewport and reduced-motion safeguards", () => {
+  const html = renderControlRoom({ missions: [], agents: [], relay: [], contracts: [] }, { accepted: [], held: [] }, { futures: [] });
+  assert.match(html, /@media\(max-width:480px\)/);
+  assert.match(html, /min-width:680px/);
+  assert.match(html, /prefers-reduced-motion:reduce/);
+});
