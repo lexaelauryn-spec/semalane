@@ -139,7 +139,9 @@ export default {
         "/graph": "/graph",
         "/merge-plan": "/merge-plan",
         "/composition": "/composition",
-        "/resolutions": "/resolutions"
+        "/resolutions": "/resolutions",
+        "/relay": "/relay",
+        "/agents": "/agents"
       };
       if (request.method === "GET" && reads[url.pathname]) return stateFetch(env, reads[url.pathname]);
 
@@ -169,14 +171,18 @@ export default {
         return json({ materialized: await runDemoMaterialization(env) }, 201);
       }
 
-      if (request.method === "POST" && ["/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged"].includes(url.pathname)) {
+      if (request.method === "POST" && ["/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged","/relay","/agents","/agents/resume","/agents/idle"].includes(url.pathname)) {
         await requireOperator(request, env);
         const target = {
           "/contracts": "/contracts",
           "/evidence": "/evidence",
           "/events/artifacts": "/events",
           "/contracts/complete": "/complete",
-          "/contracts/merged": "/merged"
+          "/contracts/merged": "/merged",
+          "/relay": "/relay",
+          "/agents": "/agents",
+          "/agents/resume": "/agents/resume",
+          "/agents/idle": "/agents/idle"
         }[url.pathname];
         return stateFetch(env, target, {
           method: "POST",
