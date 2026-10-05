@@ -7,6 +7,7 @@ import { buildEvidenceGraph, buildMergePlan } from "./evidence-graph.js";
 import { buildCompositionPlan, markMerged as markMergedSnapshot } from "./composition.js";
 import { buildResolutionTickets } from "./resolution.js";
 import { buildCandidateFutures } from "./futures.js";
+import { validateMissionContract } from "./mission.js";
 
 export class SemaLaneCoordinator {
   constructor(snapshot = {}) {
@@ -16,10 +17,19 @@ export class SemaLaneCoordinator {
     this.compositions = new Map((snapshot.compositions ?? []).map((item) => [item.repoName, item]));
     this.relay = new Map((snapshot.relay ?? []).map((item) => [item.id, item]));
     this.agents = new Map((snapshot.agents ?? []).map((item) => [item.id, item]));
+    this.missions = new Map((snapshot.missions ?? []).map((item) => [item.id, item]));
+  }
+
+  registerMission(raw) {
+    const mission = validateMissionContract(raw);
+    if (this.missions.has(mission.id)) throw new Error("mission id already exists");
+    this.missions.set(mission.id, mission);
+    return structuredClone(mission);
   }
 
   registerContract(raw) {
     const contract = validateWorkContract(raw);
+    if (contract.missionId && !this.missions.has(contract.missionId)) throw new Error("unknown mission");
     if (this.contracts.has(contract.id)) throw new Error("contract id already exists");
 
     const conflicts = [];
@@ -154,7 +164,8 @@ export class SemaLaneCoordinator {
       events: [...this.events.values()].map((item) => structuredClone(item)),
       compositions: [...this.compositions.values()].map((item) => structuredClone(item)),
       relay: [...this.relay.values()].map((item) => structuredClone(item)),
-      agents: [...this.agents.values()].map((item) => structuredClone(item))
+      agents: [...this.agents.values()].map((item) => structuredClone(item)),
+      missions: [...this.missions.values()].map((item) => structuredClone(item))
     };
   }
 
