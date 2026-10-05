@@ -5,6 +5,7 @@ import { renderControlRoom } from "../src/control-room.js";
 function fixture() {
   return {
     snapshot: {
+      missions: [{ id: "MISSION-1", objective: "Upgrade auth without breaking clients", boundaries: ["do not deploy"], successCriteria: ["compatibility evidenced"], state: "active" }],
       contracts: [
         { id: "TASK-1", agentId: "worker-a", task: "change auth", state: "completed", conflicts: [], artifact: { commit: "abcdef123456" } },
         { id: "TASK-2", agentId: "worker-b", task: "update client", state: "blocked", conflicts: [{ with: "TASK-1", reasons: [{ type: "semantic-contract", value: "public-api:auth-v2" }] }], artifact: {} }
@@ -34,6 +35,9 @@ function fixture() {
 test("control room surfaces resident team, relay, futures, and promotion boundary", () => {
   const { snapshot, composition, futures } = fixture();
   const html = renderControlRoom(snapshot, composition, futures);
+  assert.match(html, /Mission/);
+  assert.match(html, /Upgrade auth without breaking clients/);
+  assert.match(html, /do not deploy/);
   assert.match(html, /Resident team/);
   assert.match(html, /Verified relay/);
   assert.match(html, /Candidate futures/);
