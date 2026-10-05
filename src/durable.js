@@ -26,11 +26,25 @@ export class SemaLaneState extends DurableObject {
       if (request.method === "GET" && url.pathname === "/merge-plan") return response(coordinator.mergePlan());
       if (request.method === "GET" && url.pathname === "/composition") return response(coordinator.compositionPlan(DEFAULT_POLICY));
       if (request.method === "GET" && url.pathname === "/resolutions") return response(coordinator.resolutions());
+      if (request.method === "GET" && url.pathname === "/relay") return response(coordinator.snapshot().relay ?? []);
+      if (request.method === "GET" && url.pathname === "/agents") return response(coordinator.snapshot().agents ?? []);
 
       const body = request.method === "GET" ? null : await request.json();
 
       if (request.method === "POST" && url.pathname === "/contracts") {
         const result = coordinator.registerContract(body); await this.save(coordinator); return response(result, 201);
+      }
+      if (request.method === "POST" && url.pathname === "/agents") {
+        const result = coordinator.registerResidentAgent(body); await this.save(coordinator); return response(result, 201);
+      }
+      if (request.method === "POST" && url.pathname === "/agents/resume") {
+        const result = coordinator.resumeAgent(body.agentId, body); await this.save(coordinator); return response(result);
+      }
+      if (request.method === "POST" && url.pathname === "/agents/idle") {
+        const result = coordinator.idleAgent(body.agentId, body); await this.save(coordinator); return response(result);
+      }
+      if (request.method === "POST" && url.pathname === "/relay") {
+        const result = coordinator.recordRelay(body); await this.save(coordinator); return response(result, 201);
       }
       if (request.method === "POST" && url.pathname === "/artifacts") {
         const result = coordinator.assignArtifact(body.contractId, body.artifact); await this.save(coordinator); return response(result);
