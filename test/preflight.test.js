@@ -37,3 +37,27 @@ test("configured protected terms are still detected", () => {
   assert.equal(result.findings.some((finding) => finding.type === "protected-term"), true);
   assert.equal(result.findings.some((finding) => finding.rule === "protected-terms-required"), false);
 });
+
+
+test("public preflight policy can validate without private protected terms", () => {
+  const result = evaluatePreflight(
+    [{ path: "README.md", content: "public contest text" }],
+    { protectedTerms: [], requireProtectedTerms: false }
+  );
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.findings, []);
+});
+
+test("public preflight policy still rejects generic secrets", () => {
+  const keyName = ["api", "key"].join("_");
+  const fakeValue = ["abcdefgh", "12345678"].join("");
+  const result = evaluatePreflight(
+    [{ path: "config.js", content: `${keyName} = "${fakeValue}"` }],
+    { protectedTerms: [], requireProtectedTerms: false }
+  );
+
+  assert.equal(result.ok, false);
+  assert.equal(result.findings.some((finding) => finding.type === "secret" && finding.rule === "generic-api-key"), true);
+  assert.equal(result.findings.some((finding) => finding.rule === "protected-terms-required"), false);
+});
