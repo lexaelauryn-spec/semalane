@@ -6,6 +6,7 @@ import { evaluatePreflight } from "../src/preflight.js";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ignoredDirs = new Set([".git", ".cloudflare", ".tools", "node_modules", ".wrangler"]);
 const ignoredFiles = new Set(["docs/CHECKPOINT.md"]);
+const publicMode = process.argv.includes("--public");
 const protectedTerms = (process.env.SEMALANE_PROTECTED_TERMS ?? "")
   .split(",")
   .map((item) => item.trim())
@@ -43,8 +44,8 @@ if (readme?.content.includes("\\n- ")) {
 }
 
 findings.push(...evaluatePreflight(files, {
-  protectedTerms,
-  requireProtectedTerms: true
+  protectedTerms: publicMode ? [] : protectedTerms,
+  requireProtectedTerms: !publicMode
 }).findings);
 
 if (findings.length) {
@@ -55,6 +56,7 @@ if (findings.length) {
     ok: true,
     scannedFiles: files.length,
     license: packageJson.license,
-    protectedTermsConfigured: protectedTerms.length
+    policyMode: publicMode ? "public-synthetic" : "contest-private",
+    protectedTermsConfigured: publicMode ? 0 : protectedTerms.length
   }, null, 2));
 }
