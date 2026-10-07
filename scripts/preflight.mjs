@@ -37,6 +37,11 @@ for (const file of await walk(root)) {
   files.push({ path: file.relative, content: await fs.readFile(file.absolute, "utf8") });
 }
 
+const readme = files.find((file) => file.path === "README.md");
+if (readme?.content.includes("\\n- ")) {
+  findings.push({ type: "readme-format", rule: "literal-backslash-n-list-artifact", path: "README.md" });
+}
+
 findings.push(...evaluatePreflight(files, { protectedTerms }).findings);
 
 if (findings.length) {
