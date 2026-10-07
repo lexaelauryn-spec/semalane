@@ -139,16 +139,21 @@ export default {
         "/graph": "/graph",
         "/merge-plan": "/merge-plan",
         "/composition": "/composition",
-        "/resolutions": "/resolutions"
+        "/futures": "/futures",
+        "/resolutions": "/resolutions",
+        "/relay": "/relay",
+        "/agents": "/agents",
+        "/missions": "/missions"
       };
       if (request.method === "GET" && reads[url.pathname]) return stateFetch(env, reads[url.pathname]);
 
       if (request.method === "GET" && url.pathname === "/control-room") {
-        const [snapshot, composition] = await Promise.all([
+        const [snapshot, composition, futures] = await Promise.all([
           stateJson(env, "/snapshot"),
-          stateJson(env, "/composition")
+          stateJson(env, "/composition"),
+          stateJson(env, "/futures")
         ]);
-        return new Response(renderControlRoom(snapshot, composition), {
+        return new Response(renderControlRoom(snapshot, composition, futures), {
           headers: { "content-type": "text/html; charset=utf-8" }
         });
       }
@@ -169,14 +174,19 @@ export default {
         return json({ materialized: await runDemoMaterialization(env) }, 201);
       }
 
-      if (request.method === "POST" && ["/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged"].includes(url.pathname)) {
+      if (request.method === "POST" && ["/missions","/contracts","/evidence","/events/artifacts","/contracts/complete","/contracts/merged","/relay","/agents","/agents/resume","/agents/idle"].includes(url.pathname)) {
         await requireOperator(request, env);
         const target = {
+          "/missions": "/missions",
           "/contracts": "/contracts",
           "/evidence": "/evidence",
           "/events/artifacts": "/events",
           "/contracts/complete": "/complete",
-          "/contracts/merged": "/merged"
+          "/contracts/merged": "/merged",
+          "/relay": "/relay",
+          "/agents": "/agents",
+          "/agents/resume": "/agents/resume",
+          "/agents/idle": "/agents/idle"
         }[url.pathname];
         return stateFetch(env, target, {
           method: "POST",

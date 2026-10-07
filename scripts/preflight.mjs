@@ -6,6 +6,7 @@ import { evaluatePreflight } from "../src/preflight.js";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ignoredDirs = new Set([".git", ".cloudflare", ".tools", "node_modules", ".wrangler"]);
 const ignoredFiles = new Set(["docs/CHECKPOINT.md"]);
+const publicMode = process.argv.includes("--public");
 const protectedTerms = (process.env.SEMALANE_PROTECTED_TERMS ?? "")
   .split(",")
   .map((item) => item.trim())
@@ -37,7 +38,15 @@ for (const file of await walk(root)) {
   files.push({ path: file.relative, content: await fs.readFile(file.absolute, "utf8") });
 }
 
-findings.push(...evaluatePreflight(files, { protectedTerms }).findings);
+const readme = files.find((file) => file.path === "README.md");
+if (readme?.content.includes("\\n- ")) {
+  findings.push({ type: "readme-format", rule: "literal-backslash-n-list-artifact", path: "README.md" });
+}
+
+findings.push(...evaluatePreflight(files, {
+  protectedTerms: publicMode ? [] : protectedTerms,
+  requireProtectedTerms: !publicMode
+}).findings);
 
 if (findings.length) {
   console.error(JSON.stringify({ ok: false, findings }, null, 2));
@@ -47,6 +56,7 @@ if (findings.length) {
     ok: true,
     scannedFiles: files.length,
     license: packageJson.license,
-    protectedTermsConfigured: protectedTerms.length
+    policyMode: publicMode ? "public-synthetic" : "contest-private",
+    protectedTermsConfigured: publicMode ? 0 : protectedTerms.length
   }, null, 2));
 }

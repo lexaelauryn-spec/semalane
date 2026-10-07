@@ -67,11 +67,11 @@ test("mutation routes are operator-gated", async () => {
     const routeIndex = workerSource.indexOf(route);
     assert.notEqual(routeIndex, -1, `missing route ${route}`);
   }
-  const block = workerSource.slice(
-    workerSource.indexOf('if (request.method === "POST" && ["/contracts"'),
+  const operatorRoutes = workerSource.slice(
+    workerSource.indexOf('if (request.method === "POST" && ['),
     workerSource.indexOf('if (request.method === "POST" && url.pathname === "/forks")')
   );
-  assert.match(block, /await requireOperator\(request, env\)/);
+  assert.match(operatorRoutes, /await requireOperator\(request, env\)/);
   const demoMaterializeIndex = workerSource.indexOf('["/demo/materialize-tasks", "/demo/materialize"].includes(url.pathname)');
   assert.notEqual(demoMaterializeIndex, -1, "missing demo materialization aliases");
   const demoBlock = workerSource.slice(demoMaterializeIndex, demoMaterializeIndex + 400);

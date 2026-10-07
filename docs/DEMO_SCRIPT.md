@@ -1,228 +1,75 @@
 # SemaLane competition demo script
 
-Target length: **8–9 minutes**
+Target length: **7–8 minutes**
 
-Live control room:
-https://cloudforge-agent-fabric.alexandrechoken.workers.dev/control-room
+> Pre-submission draft. Use the final verified live URL after the contest branch is deliberately deployed. Do not expose operator tokens, Cloudflare credentials, private repositories, private prompts, or XAEL.L internal tooling.
 
-Public source:
-https://github.com/lexaelauryn-spec/semalane
-
-## Recording setup
-
-Open these tabs before recording:
-
-1. GitHub repository README
-2. Live SemaLane control room
-3. Live `/composition` endpoint
-4. Live `/state` endpoint
-5. Cloudflare Artifacts namespace `agent-fabric`
-6. `docs/PUBLIC_PRIVATE_BOUNDARY.md` in GitHub
-7. A terminal in a fresh SemaLane checkout
-
-Do not display operator tokens, Cloudflare credentials, private repositories, private prompts, or internal XAEL.L tooling.
-
----
-
-## 0:00–0:45 — What Git is missing
-
-**On screen:** GitHub README, title and first paragraph.
+## 0:00–0:40 — What Git is missing
+**On screen:** SemaLane Control Room hero and Mission panel.
 
 **Narration:**
+> Git gives us a history of code. But an organization of AI agents also needs a history of intent, authority, evidence, communication, and continuity. SemaLane adds that missing layer.
 
-> This is SemaLane. Git is extremely good at tracking what bytes changed and how commits relate. But when many coding agents work in parallel, that is only half the problem. We also need to know what each agent intends to change, which semantic contracts it touches, what evidence supports its work, and whether two changes conflict even when they never edit the same file.
->
-> SemaLane adds that coordination layer without asking agents to reveal how they think.
+## 0:40–1:20 — One human mission
+**On screen:** Mission.
 
-Pause on the line: **Agent collaboration for Git without sharing agent minds.**
+> The human sets the objective, boundaries, and success criteria once. They govern the mission instead of approving every keystroke. In this demo the mission is to upgrade authentication without breaking existing clients, with explicit no-deploy and compatibility boundaries.
 
----
+## 1:20–2:10 — Resident organization
+**On screen:** Resident Team.
 
-## 0:45–1:40 — Work Contracts, not minds
+> These are stable project roles, not disposable blank chats. They can go idle and resume by reconstructing continuity from observable project state. Read, write, review, and promotion authority are separate capabilities.
 
-**On screen:** Live control room.
+## 2:10–3:00 — Verified Relay
+**On screen:** Verified Relay.
 
-Point to:
-- `WORK CONTRACTS, NOT MINDS`
-- 12 agents / work contracts
-- 11 composition-ready
+> Agents do not pass hidden thoughts. They pass an inspectable handoff: what they received, what they verified, what changed, what they leave behind, and what they recommend next. That handoff becomes project provenance.
 
-**Narration:**
+## 3:00–3:50 — The conflict Git cannot see
+**On screen:** TASK-AUTH, TASK-DOCS, Semantic Conflicts.
 
-> This is a real Cloudflare deployment. Twelve synthetic coding agents registered twelve Work Contracts. A Work Contract contains bounded, useful coordination data: the task, owner, paths, resources, semantic contracts, constraints, expected outcome, and a one-way commitment to the private context version that governed the work.
->
-> It does not contain chain-of-thought, system prompts, private memory, model weights, or proprietary orchestration.
->
-> Eleven agents completed compatible work and are composition-ready.
+> These tasks touch different paths, so a textual merge can look harmless. But both claim the same semantic API contract. SemaLane sees the intent collision and blocks the incompatible work before composition.
 
----
+## 3:50–4:40 — Evidence and separation of powers
+**On screen:** Contracts/evidence state.
 
-## 1:40–2:45 — The conflict Git cannot see
+> Completion is not confidence. Work needs observable evidence and independent review. The author cannot review itself into the safe composition, and a worker does not gain promotion authority merely because its task passed.
 
-**On screen:** Scroll to TASK-3 and TASK-12, then the **Semantic conflicts** box.
+## 4:40–5:40 — Candidate Futures
+**On screen:** Candidate Futures.
 
-**Narration:**
+> Instead of only saying merge or don't merge, SemaLane shows multiple futures. One is safe now. A counterfactual can include blocked work while explaining exactly what must become true before that future could be promoted. Looking at a future changes nothing.
 
-> Here is the core demo. TASK-3 changes the auth implementation under `src/auth`. TASK-12 changes client documentation under `docs/client`.
->
-> There is no file overlap. A normal textual merge system has no reason to call this a conflict.
->
-> But both Work Contracts claim the semantic contract `public-api:auth-v2`. SemaLane detects that shared contract and blocks TASK-12 against TASK-3 before composition.
->
-> The important point is that SemaLane does this from declared public intent and observable contracts. It does not need either agent's hidden reasoning.
+## 5:40–6:30 — Cloudflare-native execution
+**On screen:** architecture/config and, if useful, synthetic Artifacts repositories.
 
-Pause on the conflict row long enough to read it.
+> Cloudflare Workers provide the control plane, Durable Objects preserve coordination state, Workflows react to Artifacts events, and Artifacts provide isolated Git repositories. Cloudflare executes SemaLane, but the coordination protocol stays provider-neutral.
 
----
+## 6:30–7:10 — Privacy and recovery
+**On screen:** public/private boundary and a clean test run.
 
-## 2:45–3:45 — Real Git artifacts on Cloudflare
-
-**On screen:** Cloudflare Artifacts namespace `agent-fabric`.
-
-Show several `task-task-*` repositories and the composition repository.
-
-**Narration:**
-
-> These are not simulated branches in memory. Each completed task produced a real Git-compatible repository in Cloudflare Artifacts.
->
-> Eleven task repositories emitted real push events. Those events flowed into a Cloudflare Workflow and then into a strongly consistent Durable Object coordination state.
->
-> The live state currently contains twelve real Artifacts push events in total: eleven task pushes and one composition push.
-
-If practical, briefly show one task repository commit.
-
----
-
-## 3:45–4:45 — Evidence instead of agent confidence
-
-**On screen:** Open the live `/state` endpoint. Search for `"evidence"`, then show representative test/review entries.
-
-**Narration:**
-
-> SemaLane does not accept work because an agent says it is confident.
->
-> Each completed task has one passing-test evidence record and two independent reviewer approvals. That is thirty-three evidence records across the eleven completed tasks.
->
-> The author cannot self-approve its own work into quorum. Evidence and review remain independently inspectable.
->
-> Across the current demo, the evidence graph contains fifty-seven nodes and forty-four edges connecting Work Contracts, commits, tests, reviews, and Artifacts events.
-
-Do not linger on raw JSON longer than necessary.
-
----
-
-## 4:45–5:50 — Deterministic composition
-
-**On screen:** Live `/composition` endpoint, then the Artifacts composition repository.
-
-**Narration:**
-
-> Once work has a real observed commit, passing tests, independent review quorum, and no unresolved conflict, it becomes eligible for deterministic composition.
->
-> This composition plan names eleven exact source repositories and exact commit IDs. SemaLane materializes a composition manifest through Git itself.
->
-> Cloudflare Workflow then validates the provenance. In this run, validation completed successfully: eleven source commits checked, zero missing.
->
-> That gives us an inspectable answer to a question agent swarms usually struggle with: exactly which work was composed, from exactly which commits, and why was each piece eligible?
-
----
-
-## 5:50–6:45 — Privacy proof
-
-**On screen:** GitHub `docs/PUBLIC_PRIVATE_BOUNDARY.md`, then terminal.
+> SemaLane versions continuity without collecting agent minds. No chain-of-thought, private prompts, or private memory are required. Private context can be represented by a one-way commitment while observable work remains auditable.
 
 Run:
-
-```bash
-npm test
-```
-
-Optionally highlight the tests:
-- `privacy boundary rejects chain-of-thought payloads`
-- `context commitments verify without exposing the private descriptor`
-- `changed private context fails the commitment opening`
-- `work contracts reject commitment opening material`
-
-**Narration:**
-
-> Privacy is an architectural boundary, not a promise in the README.
->
-> The protocol explicitly rejects private reasoning fields. Private context can be represented by a one-way SHA-256 commitment, but the private descriptor and nonce never enter coordination state.
->
-> The public repository has thirty-one passing tests, including direct tests for reasoning rejection, context-commitment verification, secret scanning, authorization, semantic conflicts, composition provenance, and the real Cloudflare event shape we encountered during deployment.
-
-Let the test summary show **31 pass, 0 fail**.
-
----
-
-## 6:45–7:35 — A live Cloudflare bug became a regression test
-
-**On screen:** `docs/LIVE_INTEGRATION.md`, section “Real integration bug found during the run.”
-
-**Narration:**
-
-> Building this against the real platform exposed an integration edge case.
->
-> Direct Artifacts events include an event timestamp inside their metadata. The Workflow-delivered form can expose that timestamp separately and omit the metadata wrapper.
->
-> Our first live event normalizer rejected that real Workflow payload. We fixed it by deterministically hydrating only the missing timestamp from the Workflow event, without reconstructing private author context, and added a regression test for that exact failure.
->
-> The repaired workflow then completed the task events and validated the final composition successfully.
-
-This section demonstrates that the project is genuinely integrated, not a mocked prototype.
-
----
-
-## 7:35–8:20 — Portability and the close
-
-**On screen:** Back to the control room, then GitHub Architecture doc.
-
-**Narration:**
-
-> Cloudflare gives SemaLane a strong execution substrate: Git-compatible Artifacts, Workers, Durable Objects, eventing, and Workflows.
->
-> But the coordination semantics are provider-neutral. Work Contracts, evidence, semantic claims, conflict facts, and composition provenance do not require agents to share a model vendor, a private memory system, or hidden reasoning.
->
-> The idea is simple: agents should collaborate by exposing what they are changing and evidence that it works, not by exposing how they think.
->
-> That is SemaLane: agent collaboration for Git without sharing agent minds.
-
-End on the live control room with TASK-12 visibly marked **CONFLICT**.
-
----
-
-## Optional 20-second technical appendix
-
-Use only if the main recording is under time.
-
-**On screen:** terminal.
-
 ```bash
 npm ci
+npm run check
 npm test
-npm run demo
+npm run demo:organization
 npm run preflight
-npx wrangler deploy --dry-run
 ```
 
-**Narration:**
+Do not narrate a fixed test count. Show the current green result.
 
-> The repository is Apache-2.0, installs from a clean checkout, has zero npm audit vulnerabilities in the verified build, passes all thirty-one tests and the privacy preflight, and produces a valid Wrangler deployment bundle.
+## 7:10–7:40 — Close
+**On screen:** Control Room.
 
----
+> SemaLane is what happens when we stop treating AI agents like autocomplete and start treating them like an organization. Git gave humans a history of code. SemaLane gives agent organizations a history of continuity.
 
-## Facts to keep exact
-
-- 12 Work Contracts
-- 11 completed / composition-ready
-- 1 blocked semantic conflict: TASK-12 versus TASK-3
-- semantic contract: `public-api:auth-v2`
-- 33 evidence records
-- 12 Artifacts push events
-- 57 evidence-graph nodes
-- 44 evidence-graph edges
-- 11 exact source commits in the composition
-- 0 missing source commits
-- 31 passing tests
-- Apache-2.0
-- Cloudflare Workers + Durable Objects + Workflows + Artifacts
+## Recording rules
+- Synthetic demo data only.
+- Never expose secrets or private context.
+- Keep the Control Room readable at 1080p and test a narrow/mobile viewport before recording.
+- Never imply a counterfactual future has executed.
+- Never imply autonomous promotion. Promotion remains an explicit authority boundary.
+- Use only facts visible in the final deployed build or its final green CI receipts.

@@ -12,11 +12,16 @@ SemaLane lets agents collaborate by publishing what they are changing and proof 
 
 ### What it adds to ordinary Git
 
+- **Mission Contracts**: humans state the objective, boundaries, and success criteria once.
+- **Resident agents**: stable project roles go idle and resume by reconstructing continuity from observable state.
+- **Verified Relay**: typed handoffs record received, verified, changed, leaving, and recommended state.
+- **Separation of powers**: read, write, review, and promotion authority are independently bounded.
 - **Work Contracts**: task, scope, resources, constraints, semantic contracts, and expected outcome.
 - **Semantic conflict detection**: blocks incompatible intent even when files do not overlap.
 - **Evidence graph**: tests, reviews, Artifacts push events, and commit provenance instead of opaque confidence.
 - **Independent review quorum**: the task author cannot self-approve into composition.
 - **Private-context commitments**: one-way SHA-256 commitments prove which private context version governed work without storing the private context.
+- **Candidate futures**: safe-now and blocked counterfactual compositions expose exactly what evidence or conflict resolution would unlock another future.
 - **Deterministic composition**: exact repositories and commits become an inspectable composition manifest.
 - **Provider-portable protocol**: Cloudflare is the execution substrate, not the owner of SemaLane semantics.
 
@@ -31,20 +36,22 @@ SemaLane lets agents collaborate by publishing what they are changing and proof 
 npm ci
 npm test
 npm run demo
-npm run preflight
+npm run preflight:public
 ```
 
-Expected test result: **31 passing tests**.
+The validation suite covers protocol privacy, verified relay, resident-agent lifecycle, separation of powers, semantic conflict detection, candidate futures, deterministic composition, operator auth, and the judge-facing control room. Run `npm test` for the current count.
+
+`npm run preflight:public` is the judge-reproducible, non-secret repository validation path. It still checks the permissive license, README formatting, and generic secret patterns, but it does not claim to apply XAELL's private protected-term policy. The secret-backed contest clearance remains `npm run preflight`; CI and the contest preview supply `SEMALANE_PROTECTED_TERMS` privately and fail closed when that policy is absent.
 
 The synthetic demo creates 12 concurrent Work Contracts. TASK-3 changes `src/auth`; TASK-12 changes `docs/client`. The files do not overlap, but both claim `public-api:auth-v2`, so SemaLane detects the semantic collision and blocks TASK-12 before composition.
 
-## Live demo
+## Contest demo
 
-The verified Cloudflare control room is available at:
+The isolated contest deployment is not yet recorded as the final verified demo. The previous `cloudforge-agent-fabric` endpoint is legacy and is **not** the contest demo.
 
-https://cloudforge-agent-fabric.alexandrechoken.workers.dev/control-room
+Record the final contest Control Room URL here only after the manual `semalane-contest-demo` deployment is deliberately run and verified against the pre-submission gate.
 
-The live environment uses synthetic competition data only. Operator mutation routes remain bearer-token protected.
+Any verified contest environment must use synthetic competition data only, and operator mutation routes remain bearer-token protected.
 
 ## Cloudflare deployment
 
@@ -86,6 +93,11 @@ The checked-in `wrangler.jsonc` binds:
 - `POST /demo/seed`
 - `POST /demo/materialize-tasks`
 - `POST /composition/materialize`
+- `POST /missions`
+- `POST /agents`
+- `POST /agents/resume`
+- `POST /agents/idle`
+- `POST /relay`
 - `POST /contracts`
 - `POST /evidence`
 - `POST /events/artifacts`
@@ -107,6 +119,9 @@ See:
 - [Public / private boundary](docs/PUBLIC_PRIVATE_BOUNDARY.md)
 - [Live Cloudflare integration](docs/LIVE_INTEGRATION.md)
 - [Competition demo storyboard](docs/SUBMISSION.md)
+- [Demo recording script](docs/DEMO_SCRIPT.md)
+- [Application draft](docs/APPLICATION_DRAFT.md)
+- [Pre-submission gate](docs/PRE_SUBMISSION_GATE.md)
 
 ## License
 
