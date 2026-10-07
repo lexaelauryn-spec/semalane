@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { evaluatePreflight } from "../src/preflight.js";
 
 test("contest privacy preflight fails closed when protected-term policy is absent", () => {
@@ -60,4 +61,36 @@ test("public preflight policy still rejects generic secrets", () => {
   assert.equal(result.ok, false);
   assert.equal(result.findings.some((finding) => finding.type === "secret" && finding.rule === "generic-api-key"), true);
   assert.equal(result.findings.some((finding) => finding.rule === "protected-terms-required"), false);
+});
+
+
+test("public preflight CLI succeeds without private policy", () => {
+  const env = { ...process.env };
+  delete env.SEMALANE_PROTECTED_TERMS;
+  const result = spawnSync(process.execPath, ["scripts/preflight.mjs", "--public"], {
+    cwd: process.cwd(),
+    env,
+    encoding: "utf8"
+  });
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.ok, true);
+  assert.equal(output.policyMode, "public-synthetic");
+  assert.equal(output.protectedTermsConfigured, 0);
+});
+
+test("private contest preflight CLI still fails closed without private policy", () => {
+  const env = { ...process.env };
+  delete env.SEMALANE_PROTECTED_TERMS;
+  const result = spawnSync(process.execPath, ["scripts/preflight.mjs"], {
+    cwd: process.cwd(),
+    env,
+    encoding: "utf8"
+  });
+
+  assert.equal(result.status, 1);
+  const output = JSON.parse(result.stderr);
+  assert.equal(output.ok, false);
+  assert.equal(output.findings.some((finding) => finding.rule === "protected-terms-required"), true);
 });
