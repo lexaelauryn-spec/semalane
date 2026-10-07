@@ -35,3 +35,5 @@ jobs:
         run: npm run demo
       - name: Public-repository preflight
         run: npm run preflight
+        env:
+          SEMALANE_PROTECTED_TERMS: ${{ secrets.SEMALANE_PROTECTED_TERMS }}
