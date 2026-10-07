@@ -23,7 +23,19 @@ export function scanText(path, content, policy = {}) {
 }
 
 export function evaluatePreflight(files, policy = {}) {
-  const findings = files.flatMap((file) => scanText(file.path, file.content, policy));
+  const protectedTerms = policy.protectedTerms ?? [];
+  const findings = [];
+
+  if (policy.requireProtectedTerms === true && protectedTerms.length === 0) {
+    findings.push({
+      path: "<policy>",
+      type: "policy",
+      rule: "protected-terms-required"
+    });
+  }
+
+  findings.push(...files.flatMap((file) => scanText(file.path, file.content, { protectedTerms })));
+
   return {
     ok: findings.length === 0,
     findings
