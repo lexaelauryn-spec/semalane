@@ -36,10 +36,12 @@ SemaLane lets agents collaborate by publishing what they are changing and proof 
 npm ci
 npm test
 npm run demo
-npm run preflight
+npm run preflight:public
 ```
 
 The validation suite covers protocol privacy, verified relay, resident-agent lifecycle, separation of powers, semantic conflict detection, candidate futures, deterministic composition, operator auth, and the judge-facing control room. Run `npm test` for the current count.
+
+`npm run preflight:public` is the judge-reproducible, non-secret repository validation path. It still checks the permissive license, README formatting, and generic secret patterns, but it does not claim to apply XAELL's private protected-term policy. The secret-backed contest clearance remains `npm run preflight`; CI and the contest preview supply `SEMALANE_PROTECTED_TERMS` privately and fail closed when that policy is absent.
 
 The synthetic demo creates 12 concurrent Work Contracts. TASK-3 changes `src/auth`; TASK-12 changes `docs/client`. The files do not overlap, but both claim `public-api:auth-v2`, so SemaLane detects the semantic collision and blocks TASK-12 before composition.
 
