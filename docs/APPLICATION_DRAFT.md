@@ -55,8 +55,10 @@ npm ci
 npm run check
 npm test
 npm run demo:organization
-npm run preflight
+npm run preflight:public
 ```
+
+The commands above are intentionally reproducible from the public repository and require no private policy values. `npm run preflight:public` validates the public checkout with generic secret scanning and repository checks only. It is not a substitute for the private contest privacy clearance: `npm run preflight` remains fail-closed and is run by CI / contest preview with the secret-backed `SEMALANE_PROTECTED_TERMS` policy.
 
 ## Before submission
 Insert only after final owner review:
