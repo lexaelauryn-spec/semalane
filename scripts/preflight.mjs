@@ -42,7 +42,10 @@ if (readme?.content.includes("\\n- ")) {
   findings.push({ type: "readme-format", rule: "literal-backslash-n-list-artifact", path: "README.md" });
 }
 
-findings.push(...evaluatePreflight(files, { protectedTerms }).findings);
+findings.push(...evaluatePreflight(files, {
+  protectedTerms,
+  requireProtectedTerms: true
+}).findings);
 
 if (findings.length) {
   console.error(JSON.stringify({ ok: false, findings }, null, 2));
