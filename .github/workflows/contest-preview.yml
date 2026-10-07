@@ -21,6 +21,8 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run preflight
+        env:
+          SEMALANE_PROTECTED_TERMS: ${{ secrets.SEMALANE_PROTECTED_TERMS }}
       - name: Deploy isolated contest preview
         run: npx wrangler deploy --name semalane-contest-demo
         env:
