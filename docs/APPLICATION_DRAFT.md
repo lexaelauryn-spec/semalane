@@ -63,16 +63,16 @@ The commands above are intentionally reproducible from the public repository and
 ## Before submission
 Insert only after final owner review:
 - final verified live Control Room URL
-- final demo video URL
+- final demo video upload artifact: file name, MP4/WebM/MOV format, size at or below 2 GiB, successful upload, and end-to-end playback confirmation
 - any contest-form-specific word-limit edits
 - final screenshots if requested
 
-Do not submit from this document automatically.
+Do not invent or require a demo-video URL unless the form changes. Do not submit from this document automatically.
 
 
 ## Exact current Cloudflare form fields
 
-Verified against Cloudflare's public submission form on October 5, 2026.
+Verified against Cloudflare's public submission form on October 7, 2026.
 
 ### Your team
 - Team name *
@@ -90,7 +90,7 @@ Verified against Cloudflare's public submission form on October 5, 2026.
 - How you used Cloudflare * — use/adapt the “Why Cloudflare” section above.
 
 ### Demo and source
-- Demo video * — upload MP4, WebM, or MOV; maximum 2 GiB.
+- Demo video * — direct file upload; MP4, WebM, or MOV; maximum 2 GiB. The current form exposes no demo-video URL field.
 - Open source repository URL * — https://github.com/lexaelauryn-spec/semalane
 - Instructions to run your project * — use the commands above.
 - Confirm project was built using Cloudflare Workers and Artifacts.
