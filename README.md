@@ -19,6 +19,7 @@ SemaLane lets agents collaborate by publishing what they are changing and proof 
 - **Private-context commitments**: one-way SHA-256 commitments prove which private context version governed work without storing the private context.
 - **Deterministic composition**: exact repositories and commits become an inspectable composition manifest.
 - **Provider-portable protocol**: Cloudflare is the execution substrate, not the owner of SemaLane semantics.
+- **Repository Gateway**: exact repository grants let independently owned teams collaborate without exposing unrelated repositories or inheriting merge/deploy authority.
 
 ## 60-second local demo
 
@@ -106,6 +107,7 @@ See:
 - [Architecture](docs/ARCHITECTURE.md)
 - [Public / private boundary](docs/PUBLIC_PRIVATE_BOUNDARY.md)
 - [Live Cloudflare integration](docs/LIVE_INTEGRATION.md)
+- [Repository Gateway](docs/REPOSITORY_GATEWAY.md)
 - [Competition demo storyboard](docs/SUBMISSION.md)
 
 ## License
