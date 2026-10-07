@@ -15,8 +15,10 @@ test("contest privacy preflight fails closed when protected-term policy is absen
 });
 
 test("generic secret checks remain active when protected-term policy is configured", () => {
+  const keyName = ["api", "key"].join("_");
+  const fakeValue = ["12345678", "90abcdef"].join("");
   const result = evaluatePreflight(
-    [{ path: "config.js", content: 'api_key = "1234567890abcdef"' }],
+    [{ path: "config.js", content: `${keyName} = "${fakeValue}"` }],
     { protectedTerms: ["operator-only-term"], requireProtectedTerms: true }
   );
 
