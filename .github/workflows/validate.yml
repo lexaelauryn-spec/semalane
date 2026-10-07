@@ -33,6 +33,8 @@ jobs:
         run: npm test
       - name: Deterministic local demo
         run: npm run demo
+      - name: Wrangler configuration dry-run
+        run: npx wrangler deploy --dry-run
       - name: Public-repository preflight
         run: npm run preflight
         env:
