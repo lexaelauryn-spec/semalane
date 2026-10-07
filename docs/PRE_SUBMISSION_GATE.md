@@ -31,14 +31,16 @@ Nothing in this checklist authorizes contest submission, merge to `main`, produc
 - [ ] Watch recording end to end
 - [ ] Confirm no credentials/private material visible
 - [ ] Confirm every spoken factual claim matches final build
-- [ ] Upload video and record final URL
+- [ ] Validate the final upload artifact is MP4, WebM, or MOV and no larger than 2 GiB; record its file name, format, and size
 
 ## Application
 - [x] Application draft prepared
 - [x] Reconcile draft with exact current contest form fields and requirements
 - [ ] Add final live URL
-- [ ] Add final video URL
 - [ ] Owner review with ChatGPT
+- [ ] After owner review, upload the validated demo file through the form's Demo video field
+- [ ] Play the uploaded demo end to end and confirm successful playback
+- [ ] Record the final upload artifact details and playback confirmation; do not require a video URL unless the form changes
 - [ ] Owner explicitly approves submission
 - [ ] Submit
 
@@ -47,7 +49,7 @@ Nothing in this checklist authorizes contest submission, merge to `main`, produc
 
 
 ## Current external form verification
-Cloudflare's public competition page/form was rechecked on October 5, 2026. The application draft now mirrors the current team, project, demo-video, repository, run-instructions, and confirmation fields. The public page requests a 5–10 minute demo; the prepared script targets 7–8 minutes.
+Cloudflare's public competition page/form was rechecked on October 7, 2026. The application draft now mirrors the current team, project, direct demo-video upload, repository, run-instructions, and confirmation fields. The current form has no demo-video URL field. The public page requests a 5–10 minute demo; the prepared script targets 7–8 minutes.
 
 ## Deployment preparation
 An explicit manual-only GitHub Actions workflow, `.github/workflows/contest-preview.yml`, is prepared for an isolated Worker name, `semalane-contest-demo`. It reruns install, syntax checks, tests, and public preflight before invoking Wrangler. It is intentionally not automatic and does not replace or mutate the existing legacy live demo unless deliberately dispatched.
